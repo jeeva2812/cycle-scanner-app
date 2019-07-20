@@ -29,9 +29,20 @@ class ScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
 
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.CAMERA),
+                0)
+        }
 
         setScannerProperties()
+
+        val qrCodeScanner = findViewById<ZXingScannerView>(R.id.qrCodeScanner)
+
+
+        qrCodeScanner.startCamera()
+        qrCodeScanner.setResultHandler(this)
     }
 
     private fun setScannerProperties() {
