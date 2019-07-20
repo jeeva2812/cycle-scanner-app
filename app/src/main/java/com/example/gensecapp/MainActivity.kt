@@ -19,13 +19,13 @@ import com.android.volley.VolleyError
 import org.json.JSONException
 import org.json.JSONObject
 import com.android.volley.toolbox.JsonObjectRequest
-
-
+import com.android.volley.toolbox.StringRequest
 
 
 class MainActivity : AppCompatActivity() {
 
     //var rollNo = findViewById<TextView>(R.id.roll_no)
+    var serial : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val serial = data?.getStringExtra("serial")
-        Toast.makeText(this,serial,Toast.LENGTH_LONG).show()
+        serial = data?.getStringExtra("serial").toString()
+        //Toast.makeText(this,serial,Toast.LENGTH_LONG).show()
 
         val builder = Uri.Builder()
         builder.scheme("https")
@@ -47,23 +47,40 @@ class MainActivity : AppCompatActivity() {
             .appendPath("studentsapp")
             .appendPath("general")
             .appendPath("get_roll_from_sno.php")
-            .appendQueryParameter("sno",serial)
+
         val url = builder.build().toString()
 
-        //Log.d("URL",url)
+        Log.d("URL",url)
 
-        val queue = Volley.newRequestQueue(this)
+        //val queue = Volley.newRequestQueue(this)
 
-        val req = JsonObjectRequest(Request.Method.POST,url,null,
-            Response.Listener<JSONObject> {
-                    response -> var rollNo = findViewById<TextView>(R.id.roll_no)
-                                rollNo.text = response.getInt("status").toString()},
-            Response.ErrorListener { Log.e("JSON","Error") })
+        val req = object : StringRequest(
+            Method.POST,url,
 
-        queue.add(req)
-        queue.start()
+            Response.Listener <String> {
+                response ->
+                val json = JSONObject(response)
+                val rollNo = findViewById<TextView>(R.id.roll_no)
+                rollNo.text = json.getString("status")
+                Toast.makeText(this,rollNo.text,Toast.LENGTH_LONG).show()
+            },
+
+            Response.ErrorListener { Log.e("Volley","Error Listener") })
+
+        {
+            override fun getParams(): Map<String, String> = mapOf("sno" to serial)
+        }
+
+        VolleySingleton.getInstance(this).addToRequestQueue(req)
 
 
     }
+
+    /*override fun getParams() : Map<String, String>  {
+        var params = HashMap<String,String>(1);
+        params.put("sno",serial)
+        return params
+    }*/
+
 }
 
