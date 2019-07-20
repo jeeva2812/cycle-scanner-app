@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             .appendQueryParameter("sno",serial)
         val url = builder.build().toString()
 
-        Log.d("URL",url)
+        //Log.d("URL",url)
 
         val queue = Volley.newRequestQueue(this)
 
