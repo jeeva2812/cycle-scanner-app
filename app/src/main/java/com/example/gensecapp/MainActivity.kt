@@ -54,15 +54,33 @@ class MainActivity : AppCompatActivity() {
 
         //val queue = Volley.newRequestQueue(this)
 
+
+        /*{
+            "code": 1,
+            "body": "[{\"rollno\":\"ME18B030\",\"fullname\":\"S JEEVA\",\"roomno\":\"258\",
+                    \"hostel\":\"Cauvery\",\"url\":\"https:\\/\\/photos.iitm.ac.in\\/byroll.php?roll=ME18B030\"}]"
+                }*/
+
         val req = object : StringRequest(
-            Method.POST,url,
+            Request.Method.POST,url,
 
             Response.Listener <String> {
                 response ->
-                val json = JSONObject(response)
-                val rollNo = findViewById<TextView>(R.id.roll_no)
-                rollNo.text = json.getString("status")
-                Toast.makeText(this,rollNo.text,Toast.LENGTH_LONG).show()
+                try {
+                    Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+                    //Log.d("JSON",response)
+                    val json = JSONObject(response)
+                    val rollNo = findViewById<TextView>(R.id.roll_no)
+                    if(json.getInt("code") == 1){
+                        val body = JSONObject(json.getString("body"))
+                        rollNo.text = body.getString("rollno")
+                    }else{
+                        rollNo.text = "Invalid"
+                    }
+
+                }catch ( e : JSONException){
+                    Log.e("JSONException","Error")
+                }
             },
 
             Response.ErrorListener { Log.e("Volley","Error Listener") })
