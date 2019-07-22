@@ -20,6 +20,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import org.json.JSONArray
 
 
 class MainActivity : AppCompatActivity() {
@@ -67,19 +68,31 @@ class MainActivity : AppCompatActivity() {
             Response.Listener <String> {
                 response ->
                 try {
-                    Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this, response, Toast.LENGTH_LONG).show()
                     //Log.d("JSON",response)
                     val json = JSONObject(response)
                     val rollNo = findViewById<TextView>(R.id.roll_no)
                     if(json.getInt("code") == 1){
-                        val body = JSONObject(json.getString("body"))
-                        rollNo.text = body.getString("rollno")
+                        val body = json.getString("body")
+                        body.replace("\\","")
+                        //body.replace("[","")
+                        //body.replace("]","")
+                        Log.d("JSON",body)
+                        try {
+                            val jsonArrayBody = JSONArray(body)
+                            val jsonBody = jsonArrayBody.getJSONObject(0)
+                            rollNo.text = jsonBody.getString("rollno")
+                        }catch (e : JSONException){
+                            Log.e("JSONException","Body Error")
+                        }
+
+
                     }else{
                         rollNo.text = "Invalid"
                     }
 
                 }catch ( e : JSONException){
-                    Log.e("JSONException","Error")
+                    Log.e("JSONException","Response Error")
                 }
             },
 
@@ -93,12 +106,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-    /*override fun getParams() : Map<String, String>  {
-        var params = HashMap<String,String>(1);
-        params.put("sno",serial)
-        return params
-    }*/
 
 }
 
