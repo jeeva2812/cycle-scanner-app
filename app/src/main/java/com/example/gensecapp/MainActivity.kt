@@ -4,15 +4,17 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.barcode.Barcode
 import android.R.attr.scheme
 import android.net.Uri
 import com.android.volley.toolbox.Volley
 import android.R.attr.start
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -20,12 +22,13 @@ import org.json.JSONException
 import org.json.JSONObject
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.squareup.picasso.Picasso
 import org.json.JSONArray
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
 
-    //var rollNo = findViewById<TextView>(R.id.roll_no)
     var serial : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,25 +74,40 @@ class MainActivity : AppCompatActivity() {
                     //Toast.makeText(this, response, Toast.LENGTH_LONG).show()
                     //Log.d("JSON",response)
                     val json = JSONObject(response)
-                    val rollNo = findViewById<TextView>(R.id.roll_no)
                     if(json.getInt("code") == 1){
-                        val body = json.getString("body")
-                        body.replace("\\","")
-                        //body.replace("[","")
-                        //body.replace("]","")
+                        var body = json.getString("body")
+                        body = body.replace("\\","")
+                        body = body.replace("\\","")
+
                         Log.d("JSON",body)
                         try {
                             val jsonArrayBody = JSONArray(body)
                             val jsonBody = jsonArrayBody.getJSONObject(0)
-                            rollNo.text = jsonBody.getString("rollno")
+                            val details = LayoutInflater.from(this).inflate(R.layout.student_details,null)
+
+                            Picasso.get().load(jsonBody.getString("url")).into(details.findViewById<ImageView>(R.id.photo))
+                            details.findViewById<TextView>(R.id.name).text = jsonBody.getString("fullname")
+                            details.findViewById<TextView>(R.id.roll_no).text = jsonBody.getString("rollno")
+                            details.findViewById<TextView>(R.id.room_no).text = jsonBody.getString("roomno")
+                            details.findViewById<TextView>(R.id.hostel).text = jsonBody.getString("hostel")
+
+                            val layout = findViewById<LinearLayout>(R.id.root_layout)
+
+                            layout.removeViewAt(0)
+                            layout.addView(details,0)
+
+                            findViewById<Button>(R.id.scan).text = "Scan Again"
+
+
+
                         }catch (e : JSONException){
                             Log.e("JSONException","Body Error")
-                            rollNo.text = "Invalid"
+                            Toast.makeText(this,"Invalid",Toast.LENGTH_SHORT).show()
                         }
 
 
                     }else{
-                        rollNo.text = "Invalid"
+                        Toast.makeText(this,"Invalid",Toast.LENGTH_SHORT).show()
                     }
 
                 }catch ( e : JSONException){
