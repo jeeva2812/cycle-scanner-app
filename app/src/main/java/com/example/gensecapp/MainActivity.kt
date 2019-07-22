@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                             rollNo.text = jsonBody.getString("rollno")
                         }catch (e : JSONException){
                             Log.e("JSONException","Body Error")
+                            rollNo.text = "Invalid"
                         }
 
 
