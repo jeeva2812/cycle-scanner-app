@@ -4,11 +4,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/root_layout"
-        android:gravity="center"
         android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
 
     <TextView
             android:textSize="32sp"
@@ -21,5 +22,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Scan"/>
+
+    <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="100dp"
+            android:background="#c0c0c0"/>
+
+    <Button
+            android:id="@+id/about"
+            style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+            android:background="@color/common_google_signin_btn_text_light_focused"
+            android:text="About Us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

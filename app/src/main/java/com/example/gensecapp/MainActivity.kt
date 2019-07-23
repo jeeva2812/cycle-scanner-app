@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley
 import android.R.attr.start
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.v4.content.ContextCompat.startActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -29,7 +30,7 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    var serial : String = ""
+    var serial: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,14 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.scan).setOnClickListener {
             val intent = Intent(applicationContext, ScanActivity::class.java)
-            startActivityForResult(intent,0)
+            startActivityForResult(intent, 0)
         }
+
+        findViewById<Button>(R.id.about).setOnClickListener {
+            val intent = Intent(applicationContext, AboutActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -54,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         val url = builder.build().toString()
 
-        Log.d("URL",url)
+        Log.d("URL", url)
 
         //val queue = Volley.newRequestQueue(this)
 
@@ -66,26 +73,26 @@ class MainActivity : AppCompatActivity() {
                 }*/
 
         val req = object : StringRequest(
-            Request.Method.POST,url,
+            Request.Method.POST, url,
 
-            Response.Listener <String> {
-                response ->
+            Response.Listener<String> { response ->
                 try {
                     //Toast.makeText(this, response, Toast.LENGTH_LONG).show()
                     //Log.d("JSON",response)
                     val json = JSONObject(response)
-                    if(json.getInt("code") == 1){
+                    if (json.getInt("code") == 1) {
                         var body = json.getString("body")
-                        body = body.replace("\\","")
-                        body = body.replace("\\","")
+                        body = body.replace("\\", "")
+                        body = body.replace("\\", "")
 
-                        Log.d("JSON",body)
+                        Log.d("JSON", body)
                         try {
                             val jsonArrayBody = JSONArray(body)
                             val jsonBody = jsonArrayBody.getJSONObject(0)
-                            val details = LayoutInflater.from(this).inflate(R.layout.student_details,null)
+                            val details = LayoutInflater.from(this).inflate(R.layout.student_details, null)
 
-                            Picasso.get().load(jsonBody.getString("url")).into(details.findViewById<ImageView>(R.id.photo))
+                            Picasso.get().load(jsonBody.getString("url"))
+                                .into(details.findViewById<ImageView>(R.id.photo))
                             details.findViewById<TextView>(R.id.name).text = jsonBody.getString("fullname")
                             details.findViewById<TextView>(R.id.roll_no).text = jsonBody.getString("rollno")
                             details.findViewById<TextView>(R.id.room_no).text = jsonBody.getString("roomno")
@@ -94,30 +101,29 @@ class MainActivity : AppCompatActivity() {
                             val layout = findViewById<LinearLayout>(R.id.root_layout)
 
                             layout.removeViewAt(0)
-                            layout.addView(details,0)
+                            layout.addView(details, 0)
 
                             findViewById<Button>(R.id.scan).text = "Scan Again"
+                            findViewById<Button>(R.id.about).visibility = View.GONE
+                            findViewById<View>(R.id.line).visibility = View.GONE
 
 
-
-                        }catch (e : JSONException){
-                            Log.e("JSONException","Body Error")
-                            Toast.makeText(this,"Invalid",Toast.LENGTH_SHORT).show()
+                        } catch (e: JSONException) {
+                            Log.e("JSONException", "Body Error")
+                            Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show()
                         }
 
 
-                    }else{
-                        Toast.makeText(this,"Invalid",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show()
                     }
 
-                }catch ( e : JSONException){
-                    Log.e("JSONException","Response Error")
+                } catch (e: JSONException) {
+                    Log.e("JSONException", "Response Error")
                 }
             },
 
-            Response.ErrorListener { Log.e("Volley","Error Listener") })
-
-        {
+            Response.ErrorListener { Log.e("Volley", "Error Listener") }) {
             override fun getParams(): Map<String, String> = mapOf("sno" to serial)
         }
 
@@ -127,4 +133,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
