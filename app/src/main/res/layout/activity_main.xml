@@ -21,23 +21,26 @@
             android:id="@+id/scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Scan"/>
 
-    <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="100dp"
-            android:background="#c0c0c0"/>
 
-    <Button
+    <!-- <Button
             android:id="@+id/about"
             style="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
             android:background="@color/common_google_signin_btn_text_light_focused"
             android:text="About Us"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"/> -->
+
+    <ImageButton
+            android:id="@+id/about"
+            android:src="@drawable/about_us"
+            android:layout_width="50dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="80dp"
+            android:background="@color/common_google_signin_btn_text_dark_pressed"
+            android:layout_height="50dp" />
 
 
 </LinearLayout>

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
         }
 
-        findViewById<Button>(R.id.about).setOnClickListener {
+        findViewById<ImageButton>(R.id.about).setOnClickListener {
             val intent = Intent(applicationContext, AboutActivity::class.java)
             startActivity(intent)
         }
@@ -104,8 +104,7 @@ class MainActivity : AppCompatActivity() {
                             layout.addView(details, 0)
 
                             findViewById<Button>(R.id.scan).text = "Scan Again"
-                            findViewById<Button>(R.id.about).visibility = View.GONE
-                            findViewById<View>(R.id.line).visibility = View.GONE
+                            findViewById<ImageButton>(R.id.about).visibility = View.GONE
 
 
                         } catch (e: JSONException) {

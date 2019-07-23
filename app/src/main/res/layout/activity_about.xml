@@ -9,7 +9,7 @@
         tools:context=".AboutActivity">
     
     <ImageView
-            android:src="@drawable/about_us"
+            android:src="@drawable/cycle_icon"
             android:layout_margin="25dp"
             android:layout_width="200dp"
             android:layout_gravity="center"
