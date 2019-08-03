@@ -10,12 +10,32 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-
+    <!--Dummy View-->
     <TextView
-            android:textSize="32sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Serial Number"
+            android:ems="10"
+            android:id="@+id/serial_no"/>
+
+    <Button
+            android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan a QR code"/>
+            android:layout_marginTop="20dp"
+            android:text="Search"/>
+
+    <TextView
+            android:textSize="24sp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"/>
 
     <Button
             android:id="@+id/scan"

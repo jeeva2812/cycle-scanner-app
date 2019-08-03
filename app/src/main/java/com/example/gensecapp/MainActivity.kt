@@ -36,9 +36,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        findViewById<Button>(R.id.search).setOnClickListener {
+            serial = findViewById<EditText>(R.id.serial_no).text.toString()
+            parse(serial)
+            findViewById<EditText>(R.id.serial_no).setText("")
+            findViewById<Button>(R.id.search).text = "Search Again"
+        }
+
         findViewById<Button>(R.id.scan).setOnClickListener {
             val intent = Intent(applicationContext, ScanActivity::class.java)
             startActivityForResult(intent, 0)
+            findViewById<Button>(R.id.scan).text = "Scan Again"
         }
 
         findViewById<ImageButton>(R.id.about).setOnClickListener {
@@ -51,6 +60,11 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         serial = data?.getStringExtra("serial").toString()
         //Toast.makeText(this,serial,Toast.LENGTH_LONG).show()
+        parse(serial)
+
+    }
+
+    fun parse(serial: String) {
 
         val builder = Uri.Builder()
         builder.scheme("https")
@@ -103,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                             layout.removeViewAt(0)
                             layout.addView(details, 0)
 
-                            findViewById<Button>(R.id.scan).text = "Scan Again"
                             findViewById<ImageButton>(R.id.about).visibility = View.GONE
 
 
@@ -127,7 +140,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         VolleySingleton.getInstance(this).addToRequestQueue(req)
-
 
     }
 
