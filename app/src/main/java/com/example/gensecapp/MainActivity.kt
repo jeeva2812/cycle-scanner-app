@@ -13,8 +13,7 @@ import android.R.attr.start
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat.startActivity
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.widget.*
 import com.android.volley.Request
 import com.android.volley.Response
@@ -63,7 +62,11 @@ class MainActivity : AppCompatActivity() {
         parse(serial)
 
     }
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
     fun parse(serial: String) {
 
         val builder = Uri.Builder()
@@ -142,5 +145,15 @@ class MainActivity : AppCompatActivity() {
         VolleySingleton.getInstance(this).addToRequestQueue(req)
 
     }
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.about_us -> {
+                val intent = Intent(applicationContext, AboutActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

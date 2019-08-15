@@ -57,6 +57,7 @@
             android:id="@+id/about"
             android:src="@drawable/about_us"
             android:layout_width="50dp"
+            android:visibility="gone"
             android:scaleType="fitCenter"
             android:layout_marginTop="80dp"
             android:background="@color/common_google_signin_btn_text_dark_pressed"
