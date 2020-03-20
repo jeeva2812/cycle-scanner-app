@@ -1,4 +1,5 @@
 # Cycle Scanner APP
+[![Apache-2.0 license](https://img.shields.io/github/license/jeeva2812/cycle-scanner-app)](LICENSE)
 
 QR Code Scanner to scan the QR code in cycle and display the details of the student who owns it.
 
